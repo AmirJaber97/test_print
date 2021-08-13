@@ -3,6 +3,7 @@ package com.example.test_printer
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.sunmi.peripheral.printer.SunmiPrinterService
+import kotlinx.android.synthetic.main.activity_main.*
 import net.geidea.GMB.pos.PrinterAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -43,7 +44,18 @@ class MainActivity : AppCompatActivity() {
             change = "0.01",
             total = "123",
             subTotal = "23",
-            vat = "40"
+            vat = "40",goods = listOf()
+
         )
+
+
+        button6.setOnClickListener {
+
+            _printJob6()
+        }
+    }
+
+    private fun _printJob6() {
+        TODO("Not yet implemented")
     }
 }
