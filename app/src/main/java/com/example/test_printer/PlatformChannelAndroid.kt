@@ -36,6 +36,7 @@ data class InvoiceItem(
     var title: String,
     var price: String,
     var q: String,
+    var p: String,
 ) : Serializable
 
 

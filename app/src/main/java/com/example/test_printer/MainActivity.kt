@@ -1,39 +1,43 @@
 package com.example.test_printer
 
+import android.content.ComponentName
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.sunmi.peripheral.printer.InnerPrinterCallback
+import com.sunmi.peripheral.printer.InnerPrinterException
+import com.sunmi.peripheral.printer.InnerPrinterManager
 import com.sunmi.peripheral.printer.SunmiPrinterService
 import kotlinx.android.synthetic.main.activity_main.*
 import net.geidea.GMB.pos.PrinterAdapter
 
 class MainActivity : AppCompatActivity() {
-    lateinit var printerAdapter: PrinterAdapter
+    var printerAdapter: PrinterAdapter? = null
+    lateinit var invoiceList: InvoiceDto
     var sunmiPrinterService: SunmiPrinterService? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var fakeCharge = ChargeDto("20.0", "106.051.064.029", 12345)
-
-
-        var fakeListForInvoice = InvoiceDto(
+        bindPrintService()
+        invoiceList = InvoiceDto(
             "Store Name Long Name",
             "12:00:06",
             "Feb 31, 2021",
             "12345",
             listOf(
-                InvoiceItem("SAFFRON MILK CAKE long long long long long long long", "20.00", "99"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "1"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "1"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "999"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99"),
-                InvoiceItem("SAFFRON MILK CAKE", "20.00", "99")
+                InvoiceItem("SAFFRON MILK CAKE long long long long long long long", "20.00", "99", "4"),
+                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99", "13"),
+                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99", "42"),
+                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99", "13"),
+                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99","51"),
+                InvoiceItem("SAFFRON MILK CAKE", "290.00", "1","11"),
+                InvoiceItem("SAFFRON MILK CAKE", "290.00", "1","1"),
+                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99","41"),
+                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99","133"),
+                InvoiceItem("SAFFRON MILK CAKE", "290.00", "999","45"),
+                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99","65"),
+                InvoiceItem("SAFFRON MILK CAKE", "20.00", "99","75")
             ),
             "30.00",
             "40.00",
@@ -47,15 +51,51 @@ class MainActivity : AppCompatActivity() {
             vat = "40",goods = listOf()
 
         )
+        button.setOnClickListener { _printJob() }
+    }
 
 
-        button6.setOnClickListener {
+    private fun bindPrintService() {
+        try {
+            InnerPrinterManager.getInstance().bindService(this, object : InnerPrinterCallback() {
+                override fun onConnected(service: SunmiPrinterService) {
+                    sunmiPrinterService = service
+                    println("printer connected $service")
+                    printerAdapter = PrinterAdapter(sunmiPrinterService, resources)
+                }
 
-            _printJob6()
+                override fun onDisconnected() {
+                    println("printer disconnected")
+                    sunmiPrinterService = null
+                }
+            })
+        } catch (e: InnerPrinterException) {
+            e.printStackTrace()
+            AlertDialog.Builder(this)
+                .setMessage("E - init : ${e.localizedMessage}")
+                .setPositiveButton(android.R.string.yes) { dialog, which ->
+
+                }
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show()
+
         }
     }
 
-    private fun _printJob6() {
-        TODO("Not yet implemented")
+    private fun _printJob() {
+        try {
+            println("test $printerAdapter")
+            printerAdapter?.doPrintJobSunmi(inv = invoiceList)
+        } catch (e: Exception) {
+            AlertDialog.Builder(this)
+                .setMessage("E - print : ${e.localizedMessage}")
+                .setPositiveButton(android.R.string.yes) { dialog, which ->
+
+                }
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show()
+        }
     }
 }
