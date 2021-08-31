@@ -1,6 +1,5 @@
 package com.example.test_printer
 
-import android.content.ComponentName
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -16,29 +15,33 @@ class MainActivity : AppCompatActivity() {
     lateinit var invoiceList: InvoiceDto
     var sunmiPrinterService: SunmiPrinterService? = null
 
+    var mockGoods = listOf(
+        InvoiceItem("SAFFRON MILK CAKE long long long long long long long", "20.00", "99", "4"),
+        InvoiceItem("SAFFRON MILK CAKE", "290.00", "99", "13"),
+        InvoiceItem("SAFFRON MILK CAKE", "290.00", "99", "42"),
+        InvoiceItem("SAFFRON MILK CAKE", "290.00", "99", "13"),
+        InvoiceItem("SAFFRON MILK CAKE", "290.00", "99", "51"),
+        InvoiceItem("SAFFRON MILK CAKE", "290.00", "1", "11"),
+        InvoiceItem("SAFFRON MILK CAKE", "290.00", "1", "1"),
+        InvoiceItem("SAFFRON MILK CAKE", "290.00", "99", "41"),
+        InvoiceItem("SAFFRON MILK CAKE", "290.00", "99", "133"),
+        InvoiceItem("SAFFRON MILK CAKE", "290.00", "999", "45"),
+        InvoiceItem("SAFFRON MILK CAKE", "290.00", "99", "65"),
+        InvoiceItem("SAFFRON MILK CAKE", "20.00", "99", "75")
+    );
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        bindPrintService()
+//        bindPrintService()
+        printerAdapter = PrinterAdapter(sunmiPrinterService, resources)
+
         invoiceList = InvoiceDto(
             "Store Name Long Name",
             "12:00:06",
             "Feb 31, 2021",
             "12345",
-            listOf(
-                InvoiceItem("SAFFRON MILK CAKE long long long long long long long", "20.00", "99", "4"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99", "13"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99", "42"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99", "13"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99","51"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "1","11"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "1","1"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99","41"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99","133"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "999","45"),
-                InvoiceItem("SAFFRON MILK CAKE", "290.00", "99","65"),
-                InvoiceItem("SAFFRON MILK CAKE", "20.00", "99","75")
-            ),
+            mockGoods,
             "30.00",
             "40.00",
             "40.00",
@@ -48,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             change = "0.01",
             total = "123",
             subTotal = "23",
-            vat = "40",goods = listOf()
+            vat = "40", goods = mockGoods
 
         )
         button.setOnClickListener { _printJob() }
@@ -85,7 +88,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun _printJob() {
         try {
-            println("test $printerAdapter")
             printerAdapter?.doPrintJobSunmi(inv = invoiceList)
         } catch (e: Exception) {
             AlertDialog.Builder(this)
