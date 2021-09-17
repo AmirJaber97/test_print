@@ -33,8 +33,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        bindPrintService()
-        printerAdapter = PrinterAdapter(sunmiPrinterService, resources)
+        bindPrintService()
+//        printerAdapter = PrinterAdapter(sunmiPrinterService, resources)
 
         invoiceList = InvoiceDto(
             "Store Name Long Name",
