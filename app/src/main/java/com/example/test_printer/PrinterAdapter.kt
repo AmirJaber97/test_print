@@ -61,13 +61,13 @@ class PrinterAdapter(var sunmiPrinterService: SunmiPrinterService?, var resource
 
         val sb = StringBuffer()
 
-        val blank1: Int = (width/4) - title[0].length
-        val blank2: Int = (width/4) - 4 - title[1].length
-        val blank3: Int = (width/4) - 4 - title[2].length
+        val blank1: Int = (width / 4) - title[0].length
+        val blank2: Int = (width / 4) - 4 - title[1].length
+        val blank3: Int = (width / 4) - 4 - title[2].length
 
-        val arBlank1: Int = (width/4) - arabicTitle[0].length
-        val arBlank2: Int = (width/4) - 4 - arabicTitle[1].length
-        val arBlank3: Int = (width/4) - 4 - arabicTitle[2].length
+        val arBlank1: Int = (width / 4) - arabicTitle[0].length
+        val arBlank2: Int = (width / 4) - 4 - arabicTitle[1].length
+        val arBlank3: Int = (width / 4) - 4 - arabicTitle[2].length
 
         sb.append("\n")
         sb.append(title[0])
@@ -78,7 +78,7 @@ class PrinterAdapter(var sunmiPrinterService: SunmiPrinterService?, var resource
         sb.append(addblank(blank3))
         sb.append(title[3])
 
-        Log.v("",sb.toString())
+        Log.v("", sb.toString())
 
 
         sb.append("\n")
@@ -90,7 +90,7 @@ class PrinterAdapter(var sunmiPrinterService: SunmiPrinterService?, var resource
         sb.append(addblank(arBlank1))
         sb.append(arabicTitle[0])
 
-        Log.v("",sb.toString())
+        Log.v("", sb.toString())
 
         return sb.toString()
     }
@@ -134,7 +134,7 @@ class PrinterAdapter(var sunmiPrinterService: SunmiPrinterService?, var resource
             sunmiPrinterService?.setAlignment(0, printerCallBack)
             sunmiPrinterService?.printText(string?.trim(), printerCallBack)
             sunmiPrinterService?.lineWrap(1, printerCallBack)
-            Log.v("",string?.trim().toString())
+            Log.v("", string?.trim().toString())
         }
 
     }
@@ -143,14 +143,8 @@ class PrinterAdapter(var sunmiPrinterService: SunmiPrinterService?, var resource
         var blank1: Int
         var blank2: Int
         var blank3: Int
-        val blank4: Int
-        val blank5: Int
-        val blank6: Int
-        val blank7: Int
-        val blank8: Int
-        val blank9: Int
 
-        val width: Int = width1/4
+        val width: Int = width1 / 4
 
         val maxNameWidth = width
 
@@ -175,7 +169,7 @@ class PrinterAdapter(var sunmiPrinterService: SunmiPrinterService?, var resource
             sunmiPrinterService?.printText(sb.toString(), printerCallBack)
             sunmiPrinterService?.lineWrap(1, printerCallBack)
 
-            Log.v("",sb.toString())
+            Log.v("", sb.toString())
 
             if (name.length > maxNameWidth) {
                 printNewline(name.substring(maxNameWidth), maxNameWidth)
@@ -186,82 +180,208 @@ class PrinterAdapter(var sunmiPrinterService: SunmiPrinterService?, var resource
 
         sunmiPrinterService?.printBitmap(divider, printerCallBack)
 
-        val total = "Total amount"
-        val real = "Total Taxable amount"
+
+        val title = arrayOf(
+            "Total Taxable amount",
+            "Total VAT",
+            "Total Amount", "Contact number", "Store Address"
+        )
         val excludingVAT = "(Excluding VAT)"
-        val vat = "Total VAT"
-        val contactNumber = "Contact number: 050258 87843"
-        val storeAddress = "Store Address: Building, street, Area, City"
 
-        blank4 = width * 3 - vat.length - (menuBean.vat?.length ?: 0)
-        blank5 = width * 3 - total.length - (menuBean.total?.length ?: 0)
-        blank6 = width * 3 - real.length - (menuBean.cash?.length ?: 0)
-        blank7 = width * 3 - excludingVAT.length
-        blank8 = width * 3 - contactNumber.length
-        blank9 = width * 3 - storeAddress.length
+        val arabicTitle = arrayOf(
+            "الإجمالي الخاضع للضريبة",
+            "مجموع ضريبة القيمة المضافة", "إجمالي المبلغ المستحق", "رقم الهاتف", "العنوان"
+        )
+        val excludingVATar = "(غير شامل ضريبة القيمة المضافة)"
 
+        val numberVal = "050258 87843"
+        val addressVal = "Building, street, Area, City"
+
+        val padding1 = 25
+        val padding2 = 13
+        val padding3 = 34
+
+        val padding4 = padding1 + padding2 + padding3
+
+        val padding5 = 19
+        val padding6 = 34
+        val padding7 = 19
+
+//        val blank1: Int = (width/2) - (title[0].length - inv.innText!!.length)
+//        val blank2: Int = (width/2) - (arabicTitle[0].length)
+//        val blank3: Int = (width/2) - (title[1].length - inv.date!!.length)
+//        val blank4: Int = (width/2) - (arabicTitle[1].length)
+//        val blank5: Int = (width/2) - (title[2].length - inv.orderId!!.length)
+//        val blank6: Int = (width/2) - (arabicTitle[2].length)
+
+        val blank1_ = padding1 - title[0].length
+        val blank2_ = padding2 - (menuBean.cash?.length ?: 0)
+        val blank3_ = padding3 - arabicTitle[0].length
+
+        val blank4_ = padding1 - title[1].length
+        val blank5_ = padding2 - (menuBean.vat?.length ?: 0)
+        val blank6_ = padding3 - arabicTitle[1].length
+
+        val blank7_ = padding1 - title[2].length
+        val blank8_ = padding2 - (menuBean.total?.length ?: 0)
+        val blank9_ = padding3 - arabicTitle[2].length
+
+        val blank10_ = padding1 - title[3].length
+        val blank11_ = padding2 - (numberVal.length)
+        val blank12_ = padding3 - arabicTitle[3].length
+
+        val blank13_ = padding5 - title[4].length
+        val blank14_ = padding6 - (addressVal.length)
+        val blank15_ = padding7 - arabicTitle[4].length
+
+        val blank10 = padding4 - (excludingVAT.trim().length + excludingVATar.trim().length)
+
+
+        sb.append("\n")
+        sb.append(title[0].trim())
+        sb.append(addblank(blank1_))
+        sb.append(addblank(blank2_))
+        sb.append(menuBean.cash?.trim())
+        sb.append(addblank(blank3_))
+        sb.append(arabicTitle[0].trim())
+
+        Log.v("", sb.toString())
+        sunmiPrinterService?.printText(sb.toString(), printerCallBack)
         sb.setLength(0)
-        sb.append(vat)
-        sb.append(addblank(blank4))
-        sb.append(menuBean.vat)
 
-        Log.v("",sb.toString())
+        sb.append("\n")
+        sb.append(excludingVAT.trim())
+        sb.append(addblank(blank10))
+        sb.append(excludingVATar.trim())
+
+        Log.v("", sb.toString())
+        sunmiPrinterService?.printText(sb.toString(), printerCallBack)
+        sb.setLength(0)
+
+        sb.append("\n")
+        sb.append(title[1].trim())
+        sb.append(addblank(blank4_))
+        sb.append(addblank(blank5_))
+        sb.append(menuBean.vat?.trim())
+        sb.append(addblank(blank6_))
+        sb.append(arabicTitle[1].trim())
+
+        Log.v("", sb.toString())
+        sunmiPrinterService?.printText(sb.toString(), printerCallBack)
+        sb.setLength(0)
+
+        sb.append("\n")
+        sb.append(title[2].trim())
+        sb.append(addblank(blank7_))
+        sb.append(addblank(blank8_))
+        sb.append(menuBean.total?.trim())
+        sb.append(addblank(blank9_))
+        sb.append(arabicTitle[2].trim())
+
+        Log.v("", sb.toString())
 
         sunmiPrinterService?.printText(sb.toString(), printerCallBack)
         sunmiPrinterService?.lineWrap(1, printerCallBack)
-
         sb.setLength(0)
-        sb.append(total)
-        sb.append(addblank(blank5))
-        sb.append(menuBean.total)
-
-        Log.v("",sb.toString())
-
-        sunmiPrinterService?.printText(sb.toString(), printerCallBack)
-        sunmiPrinterService?.lineWrap(1, printerCallBack)
-
-        sb.setLength(0)
-        sb.append(real)
-        sb.append(addblank(blank6))
-        sb.append(menuBean.cash)
-
-        Log.v("",sb.toString())
-
-        sunmiPrinterService?.printText(sb.toString(), printerCallBack)
-        sunmiPrinterService?.lineWrap(1, printerCallBack)
-
-        sb.setLength(0)
-        sb.append(excludingVAT)
-        sb.append(addblank(blank7))
-
-        Log.v("",sb.toString())
-
-        sunmiPrinterService?.printText(sb.toString(), printerCallBack)
-        sunmiPrinterService?.lineWrap(1, printerCallBack)
-
-        sb.setLength(0)
-        sb.append(contactNumber)
-        sb.append(addblank(blank8))
-//        sb.append(contactNumber)
-
-        Log.v("",sb.toString())
-
-        sunmiPrinterService?.printText(sb.toString(), printerCallBack)
-        sunmiPrinterService?.lineWrap(1, printerCallBack)
-
-        sb.setLength(0)
-        sb.append(storeAddress)
-        sb.append(addblank(blank9))
-//        sb.append(contactNumber)
-
-        Log.v("",sb.toString())
-
-        sunmiPrinterService?.printText(sb.toString(), printerCallBack)
-        sunmiPrinterService?.lineWrap(1, printerCallBack)
 
         sunmiPrinterService?.printBitmap(divider, printerCallBack)
 
+        sb.append("\n")
+        sb.append(title[3].trim())
+        sb.append(addblank(blank10_))
+        sb.append(addblank(blank11_))
+        sb.append(numberVal.trim())
+        sb.append(addblank(blank12_))
+        sb.append(arabicTitle[3].trim())
+
+        sb.append("\n")
+        sb.append(title[4].trim())
+        sb.append(addblank(blank13_))
+        sb.append(addblank(blank14_))
+        sb.append(addressVal.trim())
+        sb.append(addblank(blank15_))
+        sb.append(arabicTitle[4].trim())
+
+        Log.v("", sb.toString())
+
+        sunmiPrinterService?.printText(sb.toString(), printerCallBack)
+        sunmiPrinterService?.lineWrap(1, printerCallBack)
         sb.setLength(0)
+
+//        val total = "Total amount"
+//        val real = "Total Taxable amount"
+//        val excludingVAT = "(Excluding VAT)"
+//        val vat = "Total VAT"
+//        val contactNumber = "Contact number: 050258 87843"
+//        val storeAddress = "Store Address: Building, street, Area, City"
+//
+//        blank4 = width * 3 - vat.length - (menuBean.vat?.length ?: 0)
+//        blank5 = width * 3 - total.length - (menuBean.total?.length ?: 0)
+//        blank6 = width * 3 - real.length - (menuBean.cash?.length ?: 0)
+//        blank7 = width * 3 - excludingVAT.length
+//        blank8 = width * 3 - contactNumber.length
+//        blank9 = width * 3 - storeAddress.length
+//
+//        sb.setLength(0)
+//        sb.append(vat)
+//        sb.append(addblank(blank4))
+//        sb.append(menuBean.vat)
+//
+//        Log.v("",sb.toString())
+//
+//        sunmiPrinterService?.printText(sb.toString(), printerCallBack)
+//        sunmiPrinterService?.lineWrap(1, printerCallBack)
+//
+//        sb.setLength(0)
+//        sb.append(total)
+//        sb.append(addblank(blank5))
+//        sb.append(menuBean.total)
+//
+//        Log.v("",sb.toString())
+//
+//        sunmiPrinterService?.printText(sb.toString(), printerCallBack)
+//        sunmiPrinterService?.lineWrap(1, printerCallBack)
+//
+//        sb.setLength(0)
+//        sb.append(real)
+//        sb.append(addblank(blank6))
+//        sb.append(menuBean.cash)
+//
+//        Log.v("",sb.toString())
+//
+//        sunmiPrinterService?.printText(sb.toString(), printerCallBack)
+//        sunmiPrinterService?.lineWrap(1, printerCallBack)
+//
+//        sb.setLength(0)
+//        sb.append(excludingVAT)
+//        sb.append(addblank(blank7))
+//
+//        Log.v("",sb.toString())
+//
+//        sunmiPrinterService?.printText(sb.toString(), printerCallBack)
+//        sunmiPrinterService?.lineWrap(1, printerCallBack)
+//
+//        sb.setLength(0)
+//        sb.append(contactNumber)
+//        sb.append(addblank(blank8))
+////        sb.append(contactNumber)
+//
+//        Log.v("",sb.toString())
+//
+//        sunmiPrinterService?.printText(sb.toString(), printerCallBack)
+//        sunmiPrinterService?.lineWrap(1, printerCallBack)
+//
+//        sb.setLength(0)
+//        sb.append(storeAddress)
+//        sb.append(addblank(blank9))
+////        sb.append(contactNumber)
+//
+//        Log.v("",sb.toString())
+//
+//        sunmiPrinterService?.printText(sb.toString(), printerCallBack)
+//        sunmiPrinterService?.lineWrap(1, printerCallBack)
+//        sunmiPrinterService?.printBitmap(divider, printerCallBack)
+
     }
 
 
@@ -296,12 +416,9 @@ class PrinterAdapter(var sunmiPrinterService: SunmiPrinterService?, var resource
 
         sunmiPrinterService?.setAlignment(0, printerCallBack)
 
-
-        sunmiPrinterService?.printText(divide, printerCallBack)
-
-        val padding1: Int = 28
-        val padding2: Int = 19
-        val padding3: Int = 25
+        val padding1 = 28
+        val padding2 = 19
+        val padding3 = 25
 
 //        val blank1: Int = (width/2) - (title[0].length - inv.innText!!.length)
 //        val blank2: Int = (width/2) - (arabicTitle[0].length)
@@ -310,21 +427,21 @@ class PrinterAdapter(var sunmiPrinterService: SunmiPrinterService?, var resource
 //        val blank5: Int = (width/2) - (title[2].length - inv.orderId!!.length)
 //        val blank6: Int = (width/2) - (arabicTitle[2].length)
 
-        val blank1: Int = padding1 - title[0].length
-        val blank2: Int = padding2 - (inv.innText?.length ?: 0)
-        val blank3: Int = padding3 - arabicTitle[0].length
+        val blank1 = padding1 - title[0].length
+        val blank2 = padding2 - (inv.innText?.length ?: 0)
+        val blank3 = padding3 - arabicTitle[0].length
 
-        val blank4: Int = padding1 - title[1].length
-        val blank5: Int = padding2 - (inv.date?.length ?: 0)
-        val blank6: Int = padding3 - arabicTitle[1].length
+        val blank4 = padding1 - title[1].length
+        val blank5 = padding2 - (inv.date?.length ?: 0)
+        val blank6 = padding3 - arabicTitle[1].length
 
-        val blank7: Int = padding1 - title[2].length
-        val blank8: Int = padding2 - (inv.orderId?.length ?: 0)
-        val blank9: Int = padding3 - arabicTitle[2].length
+        val blank7 = padding1 - title[2].length
+        val blank8 = padding2 - (inv.orderId?.length ?: 0)
+        val blank9 = padding3 - arabicTitle[2].length
 
         val sb = StringBuffer()
 
-        Log.v("",divide)
+        Log.v("", divide)
 
         sb.append("\n")
         sb.append(title[0])
@@ -334,7 +451,7 @@ class PrinterAdapter(var sunmiPrinterService: SunmiPrinterService?, var resource
         sb.append(addblank(blank3))
         sb.append(arabicTitle[0])
 
-        Log.v("",sb.toString())
+        Log.v("", sb.toString())
         sunmiPrinterService?.printText(sb.toString(), printerCallBack)
         sb.setLength(0)
 
@@ -346,7 +463,7 @@ class PrinterAdapter(var sunmiPrinterService: SunmiPrinterService?, var resource
         sb.append(addblank(blank6))
         sb.append(arabicTitle[1])
 
-        Log.v("",sb.toString())
+        Log.v("", sb.toString())
         sunmiPrinterService?.printText(sb.toString(), printerCallBack)
         sb.setLength(0)
 
@@ -358,7 +475,7 @@ class PrinterAdapter(var sunmiPrinterService: SunmiPrinterService?, var resource
         sb.append(addblank(blank9))
         sb.append(arabicTitle[2])
 
-        Log.v("",sb.toString())
+        Log.v("", sb.toString())
 
         sunmiPrinterService?.printText(sb.toString(), printerCallBack)
         sunmiPrinterService?.lineWrap(1, printerCallBack)
@@ -377,7 +494,7 @@ class PrinterAdapter(var sunmiPrinterService: SunmiPrinterService?, var resource
         sunmiPrinterService?.printText(goodsTitle, printerCallBack)
 
 
-        Log.v("",goodsTitle)
+        Log.v("", goodsTitle)
 
         sunmiPrinterService?.lineWrap(2, printerCallBack)
 
